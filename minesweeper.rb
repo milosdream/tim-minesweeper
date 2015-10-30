@@ -1,3 +1,5 @@
+require 'byebug'
+
 class Game
   def start
   end
@@ -23,19 +25,17 @@ class Tile
 end
 
 class Board
-  attr_accessor :grid
+  attr_reader :grid
 
   def initialize(size = 3)
     @grid = Array.new(size) {Array.new(size)}
   end
 
-  def [](pos)
-    x, y = pos
+  def [](x,y)
     @grid[x][y]
   end
 
-  def []=(pos, value)
-    x, y = pos
+  def []=(x, y, value)
     @grid[x][y] = value
   end
 
@@ -51,14 +51,31 @@ class Board
     end
 
     tile_number = 0
-    (0...grid.length).to_a.shuffle.each do |x|
-      (0...grid.length).to_a.shuffle.each do |y|
-        grid[x,y] = tiles[tile_number]
+    row = (0...grid.length).to_a.shuffle!
+    col = (0...grid.length).to_a.shuffle!
+    row.each do |x|
+      col.each do |y|
+        grid.[]=(x,y,tiles[tile_number])
         tile_number += 1
       end
     end
 
+    nil
   end
+
+  # def fill_in
+  #   tile_number = 0
+  #   row = (0...grid.length).to_a.shuffle!
+  #   col = (0...grid.length).to_a.shuffle!
+  #   row.each do |x|
+  #     col.each do |y|
+  #       grid[x][y] = tile_number
+  #       tile_number += 1
+  #     end
+  #   end
+  #   @grid
+  # end
+
 
   def display
     @grid
