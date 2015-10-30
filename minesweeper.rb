@@ -7,6 +7,11 @@ class Game
 end
 
 class Tile
+
+  def initialize(bomb = false)
+    @bomb = bomb
+  end
+
   def reveal
   end
 
@@ -17,9 +22,8 @@ class Tile
   end
 end
 
-#hello
 class Board
-  attr_reader :grid
+  attr_accessor :grid
 
   def initialize(size = 3)
     @grid = Array.new(size) {Array.new(size)}
@@ -27,16 +31,37 @@ class Board
 
   def [](pos)
     x, y = pos
-    grid[x][y]
+    @grid[x][y]
   end
 
   def []=(pos, value)
     x, y = pos
-    grid[x][y] = value
+    @grid[x][y] = value
   end
 
+  def put_bombs
+    spots = grid.length ** 2
+    tiles = []
+    (0...spots).to_a.each do |spot|
+      if (spot + 0.0)/spots < 0.334
+        tiles << Tile.new(true)
+      else
+        tiles << Tile.new
+      end
+    end
 
+    tile_number = 0
+    (0...grid.length).to_a.shuffle.each do |x|
+      (0...grid.length).to_a.shuffle.each do |y|
+        grid[x,y] = tiles[tile_number]
+        tile_number += 1
+      end
+    end
 
-  def put_bombs(size)
   end
+
+  def display
+    @grid
+  end
+
 end
