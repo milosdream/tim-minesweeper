@@ -17,6 +17,7 @@ class Tile
   end
 end
 
+
 class Board
   attr_reader :grid
 
